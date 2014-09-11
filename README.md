@@ -8,14 +8,16 @@ Como começar?
 
 Simples!
 
-<?php
+    <?php
+    
     require_once 'PHPLeituraNFe.php';
-
+    
     $leitor = new PHPLeituraNFe();
     $leitor->loadXML('nota-fiscal.xml');
     $dados = (array)$leitor;
     print_r($leitor);
-?>
+    
+    ?>
 
 Se quiser auxiliar no desenvolvimento, abra a classe principal e ative mude a constante NFE_DEBUG para true, assim você será notificado de itens que as classes ainda não interpretam e poderá auxiliar.
 
