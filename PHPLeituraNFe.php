@@ -18,6 +18,8 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeDetProd.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeEmit.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeEmitEnderEmit.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeIde.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTotal.php';
+require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTotalICMSTot.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeInfAdic.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTransp.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTranspReboque.php';
@@ -27,7 +29,7 @@ require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTranspVeiculo.p
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTranspVolume.php';
 require_once __DIR__ . DIRECTORY_SEPARATOR . 'PHPLeituraNFeInfNFeTranspVolumeLacres.php';
 
-define('NFE_DEBUG', true);
+define('NFE_DEBUG', false);
 
 class PHPLeituraNFe {
     public $versao=2;
@@ -35,23 +37,23 @@ class PHPLeituraNFe {
     public $XMLDom=null;
     public $stringXML=null;
     public $stringTXT=null;
-    public $infNFe=array();
+    public $infNFe=null;
     
     public function loadXML($file){
         $dom = new DOMDocument(1, 'UTF-8');
         $dom->formatOutput = false;
         if ($dom->load($file)){
             foreach ($dom->childNodes as $NFe){
-                if ($NFe->nodeName=='nfeProc'){
-                    foreach ($NFe->childNodes as $NFe2){
-                        if ($NFe2->nodeName=='NFe'){
-                            $infNFe = new PHPLeituraNFeInfNFe($NFe2);
-                            $this->infNFe[] = (array)$infNFe;
+                if ($NFe->nodeName=='NFe'){
+                    $infNFe = new PHPLeituraNFeInfNFe($NFe);
+                    $this->infNFe = (array)$infNFe;
+                } elseif ($NFe->nodeName=='nfeProc'){
+                    foreach ($NFe->childNodes as $NFeProc){
+                        if ($NFeProc->nodeName=='NFe'){
+                            $infNFe = new PHPLeituraNFeInfNFe($NFeProc);
+                            $this->infNFe = (array)$infNFe;
                         }
                     }
-                } elseif ($NFe->nodeName=='NFe'){
-                    $infNFe = new PHPLeituraNFeInfNFe($NFe);
-                    $this->infNFe[] = (array)$infNFe;
                 }
             }
         } else {

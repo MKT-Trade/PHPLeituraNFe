@@ -27,7 +27,8 @@ class PHPLeituraNFeInfNFeTransp {
                     break;
                 
                 case 'vol':
-                    $this->vol[] = new PHPLeituraNFeInfNFeTranspVolume($Transp);
+                    $vol = new PHPLeituraNFeInfNFeTranspVolume($Transp);
+                    $this->vol[] = (array)$vol;
                     break;
                 
                 default:

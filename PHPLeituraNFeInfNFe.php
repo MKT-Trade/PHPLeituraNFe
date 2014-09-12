@@ -53,6 +53,11 @@ class PHPLeituraNFeInfNFe {
                         $this->transp = (array)$transp;
                         break;
                     
+                    case 'total':
+                        $total = new PHPLeituraNFeInfNFeTotal($node);
+                        $this->total = (array)$total;
+                        break;
+                    
                     default:
                         if (NFE_DEBUG) echo __CLASS__ . ": tag {$node->nodeName} não trabalhada<br/>\n";
                         break;
